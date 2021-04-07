@@ -10,7 +10,6 @@ const app = express();
 app.set('view engine', 'pug');
 app.use(bodyParser.json({ limit : '200MB'}));
 app.use(cors());
-
 app.post('/htmlToPdf', async function(request ,response){  
   /* let config = {
     "quality": "100",           
