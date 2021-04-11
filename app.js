@@ -18,7 +18,7 @@ app.get('', async function(request ,response){
 
 
 app.post('/htmlToPdf', async function(request ,response){  
-  /* let config = {
+  let config = {
     "quality": "100",           
     "format": "Letter", 
     paginationOffset: 1,       
@@ -35,8 +35,8 @@ app.post('/htmlToPdf', async function(request ,response){
   const pdf = require('html-pdf');
   pdf.create(request.body.html,config).toBuffer(function (error, buffer){
     return response.send(JSON.stringify(buffer.toString('base64'), null, 4));
-  }); */
-  await new Promise((resolve)=>{
+  });
+ /*  await new Promise((resolve)=>{
     let options = { 
       format: 'Letter',
       printBackground: true,
@@ -54,7 +54,7 @@ app.post('/htmlToPdf', async function(request ,response){
     return html_to_pdf.generatePdf(file, options);
   }).then((respuesta)=>{
     return response.send(JSON.stringify(respuesta.toString('base64'), null, 4));
-  });
+  }); */
 });
 
 const PORT = process.env.PORT || 8001;
