@@ -51,9 +51,10 @@ app.post('/htmlToPdf', function(request ,response){
     },  
   };
   let file = { content: request.body.html};  
-  return html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
+  /* return html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
     return response.send(JSON.stringify(pdfBuffer.toString('base64'), null, 4));
-  });
+  }); */
+  return  response.send(JSON.stringify("Holaaaa"));
 });
 
 const PORT = process.env.PORT || 8001;
