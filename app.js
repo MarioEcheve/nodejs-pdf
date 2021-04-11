@@ -1,7 +1,7 @@
+
+'use strict';
+
 var html_to_pdf = require('html-pdf-node');
-
-
-
 var cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
