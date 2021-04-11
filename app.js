@@ -17,7 +17,7 @@ app.get('', async function(request ,response){
 });
 
 
-app.post('/htmlToPdf', async function(request ,response){  
+app.post('/htmlToPdf', function(request ,response){  
   /* let config = {
     "quality": "100",           
     "format": "Letter", 
