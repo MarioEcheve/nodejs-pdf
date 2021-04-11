@@ -51,7 +51,7 @@ app.post('/htmlToPdf', async function(request ,response){
       },  
     };
     let file = { content: request.body.html};  
-    let respuesta =  html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
+    let respuesta =  await html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
       return pdfBuffer;
     });
     resolve(respuesta);
