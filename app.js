@@ -10,6 +10,13 @@ const app = express();
 app.set('view engine', 'pug');
 app.use(bodyParser.json({ limit : '200MB'}));
 app.use(cors());
+
+
+app.get('', async function(request ,response){ 
+  return response.send(JSON.stringify("Servidor UP"));
+});
+
+
 app.post('/htmlToPdf', async function(request ,response){  
   /* let config = {
     "quality": "100",           
