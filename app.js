@@ -55,7 +55,7 @@ app.post('/htmlToPdf', async function(request ,response){
       resolve(pdfBuffer);
     });
   }).then((respuesta)=>{
-    return response.send(JSON.stringify(respuesta.toString('base64'), null, 4));
+    return response.send("hola");
   });
 });
 
