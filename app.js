@@ -51,7 +51,7 @@ app.post('/htmlToPdf', async function(request ,response){
     },  
   };
   let file = { content: request.body.html};  
-  html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
+  return html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
     return response.send(JSON.stringify(pdfBuffer.toString('base64'), null, 4));
   });
 });
