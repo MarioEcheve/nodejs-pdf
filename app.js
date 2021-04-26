@@ -1,81 +1,41 @@
-const html_to_pdf = require('html-pdf-node');
+
 const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
-const PORT = process.env.PORT || 8001;
 
-// implementacion de nodejs
-
-
+const aws = require('./aws/aws.js');
+const pdf = require('./pdf/pdf.js');
 
 const app = express();
+const PORT = process.env.PORT || 8001;
+
 app.set('view engine', 'pug');
 app.use(bodyParser.json({ limit: '200MB' }));
 app.use(cors());
 
-
 app.post('/htmlToPdf', async function (request, response) {
-  /* let config = {
-    "quality": "100",           
-    "format": "Letter", 
-    paginationOffset: 1,       
-    "header": {
-      "height": "8mm",
-    },
-    "footer": {
-      "height": "15mm",
-      "contents": {
-        default: '<div style="border-top: 1px solid #aaa; margin-left: 15px; margin-right: 15px; font-family: Arial, Helvetica, sans-serif; font-size: 11px; padding-top: 5px; line-height: 13px;">Código Verificación: WWJMLLKPI02<span style="float: right;">Página: {{page}} de {{pages}}</span><br/>Para verificar la validez del folio dirigirse a <a>http://www.lodigital.cl/verificacion</a></div>'
-      }
-    },
+  let respuesta = await pdf.crearPdf(request);
+  if(respuesta){
+    response.send(respuesta);
   }
-  const pdf = require('html-pdf');
-  pdf.create(request.body.html,config).toBuffer(function (error, buffer){
-    return response.send(JSON.stringify(buffer.toString('base64'), null, 4));
-  }); */
-
-  let options = {
-    format: 'Letter',
-    printBackground: true,
-    displayHeaderFooter: true,
-    footerTemplate: `<div style="width: 100%; border-top: 1px solid #aaa; margin-left: 15px; margin-right: 15px; font-family: Arial, Helvetica, sans-serif; font-size: 8px; padding-top: 5px; line-height: 9px;">Código Verificación: ${request.body.codigoVerificacion}<span style="float: right;">Página: <a class="pageNumber"></a> de <a class="totalPages"></a></span><br/>Verifique la validez de este documento en: <a>http://www.lodigital.cl/verificacion</a></div>`,
-    headerTemplate: '<div></div>',
-    margin: {
-      top: '10mm',
-      right: '20px',
-      bottom: '20mm',
-      left: '15px'
-    },
-  };
-  let file = { content: request.body.html };
-  html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
-    return response.send(JSON.stringify(pdfBuffer.toString('base64'), null, 4));
-  });
 });
 
+app.post('/crearCarpetaEmpresa', async function (request, response) {
+  let respuesta = aws.crearFolderAWS(request.body.nombreCarpeta);
+  if(respuesta){
+    return response.send(JSON.stringify("carpeta creada correctamente"));
+  }else{
+    return response.send(JSON.stringify("Error al crear la carpeta"));
+  }
+});
 
-
-app.get('/crearCarpetaEmpresa', async function (request, response) {
-  var AWS = require("aws-sdk");
-  AWS.config.update({
-    accessKeyId: "AKIAWUHFQWCG56GZBUHU",
-    secretAccessKey: "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"
-  });
-  s3 = new AWS.S3();
-  
-  var bucketParams = {
-    Bucket: "lodigital-s3",
-    ACL: "public-read",
-    Key: "empresas/01-empresa-prueba/",
-    Body: ''
-  };
-  s3.upload(bucketParams, function(err, data) {
-    if(err){
-      console.log("Error", err);
-    }else{
-      console.log("Success", data.Location);
-    }
-  });
+app.post('/guardarArchivo', async function (request, response) {
+  let respuesta = aws.guardarArchivo(request.body.nombreCarpeta , request.body.archivo);
+  if(respuesta){
+    return response.send(JSON.stringify("carpeta creada correctamente"));
+  }else{
+    return response.send(JSON.stringify("Error al crear la carpeta"));
+  }
 });
 
 app.listen(PORT, () => {
