@@ -1,4 +1,5 @@
 const html_to_pdf = require('html-pdf-node');
+const aws = require('../aws/aws.js');
 
 module.exports.crearPdf = async (request) => {
     let respuesta;
@@ -36,7 +37,7 @@ module.exports.crearPdf = async (request) => {
         },
     };
     await html_to_pdf.generatePdf(file, options).then(pdfBuffer => {
-         respuesta = JSON.stringify(pdfBuffer.toString('base64'), null, 4);
+      respuesta = JSON.stringify(pdfBuffer.toString('base64'), null, 4);
     });
     return respuesta;
 };

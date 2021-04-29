@@ -1,43 +1,32 @@
-var AWS = require("aws-sdk");
+var aws = require("aws-sdk");
 
 module.exports.crearFolderAWS = (key) => {
-    AWS.config.update({
-        accessKeyId: "AKIAWUHFQWCG56GZBUHU",
-        secretAccessKey: "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"
+  aws.config.update({
+        accessKeyId: "AKIAWUHFQWCGWEYYDY5G",
+        secretAccessKey: "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"
     });
-    s3 = new AWS.S3();
-    var bucketParams = {
+    s3 = new aws.S3();
+    let bucketParams = {
         Bucket: "lodigital-s3",
         ACL: "public-read",
         Key: `empresas/${key}/`,
         Body: ''
     };
-    return s3.upload(bucketParams, function(err, data) {
-        if(err){
-          return err;
-        }else{
-          return data.Location;
-        }
-    });
+    return s3.upload(bucketParams).promise();
 };
 
-module.exports.guardarArchivo = (key, archivo) => {
-    AWS.config.update({
-        accessKeyId: "AKIAWUHFQWCG56GZBUHU",
-        secretAccessKey: "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"
+module.exports.guardarArchivo = (nombreCarpeta, nombreArchivo, buffer) => {
+    aws.config.update({
+        accessKeyId: "AKIAWUHFQWCGWEYYDY5G",
+        secretAccessKey: "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"
     });
-    s3 = new AWS.S3();
-    var bucketParams = {
+    s3 = new aws.S3();
+    let bucketParams = {
         Bucket: "lodigital-s3",
         ACL: "public-read",
-        Key: `empresas/${key}`,
-        Body: archivo
+        Key: `empresas/${nombreCarpeta}/${nombreArchivo}`,
+        Body: Buffer.from(buffer, 'base64'),
+        ContentType: 'application/pdf'
     };
-    return s3.upload(bucketParams, function(err, data) {
-        if(err){
-          return err;
-        }else{
-          return data.Location;
-        }
-    });
+    return s3.upload(bucketParams).promise();
 };

@@ -30,7 +30,9 @@ app.post('/crearCarpetaEmpresa', async function (request, response) {
 });
 
 app.post('/guardarArchivo', async function (request, response) {
-  let respuesta = aws.guardarArchivo(request.body.nombreCarpeta , request.body.archivo);
+  let nombreCarpeta = request.body.folio.nombreCarpetaAws;
+  let nombreArchivo = request.body.folio.correlativo+"-"+request.body.folio.asunto+"-"+request.body.folio.libro.contrato.nombre;
+  let respuesta = await aws.guardarArchivo(nombreCarpeta, nombreArchivo, request.body.pdf);
   if(respuesta){
     return response.send(JSON.stringify("carpeta creada correctamente"));
   }else{
