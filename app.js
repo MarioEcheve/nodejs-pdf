@@ -34,9 +34,20 @@ app.post('/guardarArchivo', async function (request, response) {
   let nombreArchivo = request.body.folio.correlativo+"-"+request.body.folio.asunto+"-"+request.body.folio.libro.contrato.nombre;
   let respuesta = await aws.guardarArchivo(nombreCarpeta, nombreArchivo, request.body.pdf);
   if(respuesta){
-    return response.send(JSON.stringify("carpeta creada correctamente"));
+    return response.send(JSON.stringify(respuesta));
   }else{
-    return response.send(JSON.stringify("Error al crear la carpeta"));
+    return response.send(JSON.stringify(respuesta));
+  }
+}); 
+
+app.post('/eliminarCarpetaConArchivos', async function (request, response){
+  key = request.body.nombreCarpeta;
+  console.log(key)
+  let respuesta = await aws.eliminarFolderAWS(key);
+  if(respuesta){
+    return response.send(JSON.stringify("carpeta eliminada correctamente"));
+  }else{
+    return response.send(JSON.stringify("Error al eliminar la carpeta"));
   }
 });
 
