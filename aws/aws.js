@@ -15,8 +15,6 @@ module.exports.crearFolderAWS = (key) => {
     return s3.upload(bucketParams).promise();
 };
 
-
-
 module.exports.guardarArchivo = (nombreCarpeta, nombreArchivo, buffer) => {
     aws.config.update({
         accessKeyId: "AKIAWUHFQWCGWEYYDY5G",
@@ -32,6 +30,20 @@ module.exports.guardarArchivo = (nombreCarpeta, nombreArchivo, buffer) => {
     };
     return s3.upload(bucketParams).promise();
 };
+
+module.exports.buscarPdfBase64 = async (key) => {
+    aws.config.update({
+        accessKeyId: "AKIAWUHFQWCGWEYYDY5G",
+        secretAccessKey: "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"
+    });
+    s3 = new aws.S3();
+    let bucketParams = {
+        Bucket: "lodigital-s3",
+        Key: key,
+    };
+    let fileStream = await s3.getObject(bucketParams).promise();
+    return fileStream.Body.toString('base64');
+}
 
 module.exports.eliminarFolderAWS = async (key)=>{
     aws.config.update({

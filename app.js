@@ -51,6 +51,20 @@ app.post('/eliminarCarpetaConArchivos', async function (request, response){
   }
 });
 
+app.post('/buscarArchivoAws', async function (request, response){
+  console.log(request)
+  let respuesta = await aws.buscarPdfBase64(request.body.key);
+  return response.send(JSON.stringify(respuesta));
+  /* key = request.body.nombreCarpeta;
+  console.log(key)
+  let respuesta = await aws.eliminarFolderAWS(key);
+  if(respuesta){
+    return response.send(JSON.stringify("carpeta eliminada correctamente"));
+  }else{
+    return response.send(JSON.stringify("Error al eliminar la carpeta"));
+  } */
+});
+
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
   console.log('Press Ctrl+C to quit.');
