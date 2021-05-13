@@ -43,9 +43,8 @@ app.post('/guardarArchivo', async function (request, response) {
 
 app.post('/confirmarLectura', async function (request, response) {
   let nombreCarpeta = request.body.folio.nombreCarpetaAws;
-  console.log(nombreCarpeta)
   /* let nombreArchivo = request.body.folio.correlativo+"-"+request.body.folio.asunto+"-"+request.body.folio.libro.contrato.nombre; */
-  let nombreArchivo = `Folio Nº${request.body.folio.correlativo}_${request.body.folio.libro.nombre}-lectura`;
+  let nombreArchivo = `Folio Nº${request.body.folio.correlativo}_${request.body.folio.libro.nombre}_confirmación`;
   let respuesta = await aws.guardarArchivo(nombreCarpeta, nombreArchivo, request.body.pdf);
   if(respuesta){
     return response.send(JSON.stringify(respuesta));
